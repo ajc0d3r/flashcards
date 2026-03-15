@@ -88,12 +88,14 @@ export default function Home() {
     }
     let isCancelled = false;
     const start = currentPageIndex * CARDS_PER_PAGE;
+    const themeId = deck.themeId;
 
-    void loadImagesForCards(visibleCards, deck.themeId, () => isCancelled).then(
-      (updatedCards) => {
-        if (isCancelled || !updatedCards) {
-          return;
-        }
+    setIsPreparingAudio(true);
+
+    // Load images first, then audio
+    void (async () => {
+      const updatedCards = await loadImagesForCards(visibleCards, themeId, () => isCancelled);
+      if (!isCancelled && updatedCards) {
         setDeck((prev) => {
           if (!prev) {
             return prev;
@@ -104,33 +106,22 @@ export default function Home() {
           });
           return { ...prev, cards: newCards };
         });
-      },
-    );
+      }
+
+      if (!isCancelled) {
+        await preloadVisibleAudio(visibleCards, selectedLanguages, () => isCancelled);
+      }
+
+      if (!isCancelled) {
+        setIsPreparingAudio(false);
+      }
+    })();
 
     return () => {
       isCancelled = true;
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [screen, currentPageIndex, deck?.id]);
-
-  useEffect(() => {
-    if (screen !== "cards" || visibleCards.length === 0) {
-      return;
-    }
-    let isCancelled = false;
-    setIsPreparingAudio(true);
-    void preloadVisibleAudio(visibleCards, selectedLanguages, () => isCancelled).finally(
-      () => {
-        if (!isCancelled) {
-          setIsPreparingAudio(false);
-        }
-      },
-    );
-    return () => {
-      isCancelled = true;
-    };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [screen, currentPageIndex, deck, selectedLanguages]);
+  }, [screen, currentPageIndex, deck?.id, selectedLanguages]);
 
   async function preloadEntryImages() {
     const [hero, ...themeResults] = await Promise.all([
