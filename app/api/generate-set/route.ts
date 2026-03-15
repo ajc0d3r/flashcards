@@ -24,9 +24,13 @@ export async function POST(request: NextRequest) {
       safeLanguages.length > 0 ? safeLanguages : ["en", "hi"];
 
     if (BUILT_IN_THEME_IDS.includes(payload.themeId)) {
-      const seededDeck = loadSeededDeckForTheme(payload.themeId, selectedLanguages);
-      if (seededDeck) {
-        return NextResponse.json({ deck: seededDeck });
+      try {
+        const seededDeck = loadSeededDeckForTheme(payload.themeId, selectedLanguages);
+        if (seededDeck) {
+          return NextResponse.json({ deck: seededDeck });
+        }
+      } catch {
+        // DB unavailable (e.g. read-only filesystem on Vercel) — fall through to buildDeckFromRequest
       }
     }
 
