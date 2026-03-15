@@ -1,0 +1,83 @@
+import { FlashcardWord } from "@/types/flashcard";
+
+export const VOCABULARY_BY_THEME: Record<string, FlashcardWord[]> = {
+  animals: [
+    makeWord("animals", "cat", "Cat", "बिल्ली", "猫", "قطة"),
+    makeWord("animals", "dog", "Dog", "कुत्ता", "狗", "كلب"),
+    makeWord("animals", "rabbit", "Rabbit", "खरगोश", "兔子", "أرنب"),
+    makeWord("animals", "bird", "Bird", "चिड़िया", "鸟", "طائر"),
+    makeWord("animals", "fish", "Fish", "मछली", "鱼", "سمكة"),
+    makeWord("animals", "elephant", "Elephant", "हाथी", "大象", "فيل"),
+    makeWord("animals", "lion", "Lion", "शेर", "狮子", "أسد"),
+    makeWord("animals", "monkey", "Monkey", "बंदर", "猴子", "قرد"),
+    makeWord("animals", "cow", "Cow", "गाय", "奶牛", "بقرة"),
+    makeWord("animals", "sheep", "Sheep", "भेड़", "绵羊", "خروف"),
+    makeWord("animals", "duck", "Duck", "बतख", "鸭子", "بطة"),
+    makeWord("animals", "horse", "Horse", "घोड़ा", "马", "حصان"),
+  ],
+  transport: [
+    makeWord("transport", "car", "Car", "कार", "汽车", "سيارة"),
+    makeWord("transport", "bus", "Bus", "बस", "公交车", "حافلة"),
+    makeWord("transport", "train", "Train", "ट्रेन", "火车", "قطار"),
+    makeWord("transport", "bicycle", "Bicycle", "साइकिल", "自行车", "دراجة"),
+    makeWord("transport", "airplane", "Airplane", "हवाई जहाज", "飞机", "طائرة"),
+    makeWord("transport", "boat", "Boat", "नाव", "船", "قارب"),
+    makeWord("transport", "scooter", "Scooter", "स्कूटर", "踏板车", "سكوتر"),
+    makeWord("transport", "truck", "Truck", "ट्रक", "卡车", "شاحنة"),
+    makeWord("transport", "ambulance", "Ambulance", "एम्बुलेंस", "救护车", "سيارة إسعاف"),
+    makeWord("transport", "tractor", "Tractor", "ट्रैक्टर", "拖拉机", "جرار"),
+  ],
+  "house-items": [
+    makeWord("house-items", "chair", "Chair", "कुर्सी", "椅子", "كرسي"),
+    makeWord("house-items", "table", "Table", "मेज", "桌子", "طاولة"),
+    makeWord("house-items", "bed", "Bed", "बिस्तर", "床", "سرير"),
+    makeWord("house-items", "lamp", "Lamp", "लैंप", "灯", "مصباح"),
+    makeWord("house-items", "spoon", "Spoon", "चम्मच", "勺子", "ملعقة"),
+    makeWord("house-items", "cup", "Cup", "कप", "杯子", "كوب"),
+    makeWord("house-items", "plate", "Plate", "प्लेट", "盘子", "طبق"),
+    makeWord("house-items", "clock", "Clock", "घड़ी", "时钟", "ساعة"),
+    makeWord("house-items", "door", "Door", "दरवाज़ा", "门", "باب"),
+    makeWord("house-items", "window", "Window", "खिड़की", "窗户", "نافذة"),
+    makeWord("house-items", "pillow", "Pillow", "तकिया", "枕头", "وسادة"),
+    makeWord("house-items", "blanket", "Blanket", "कंबल", "毯子", "بطانية"),
+  ],
+  fruits: [
+    makeWord("fruits", "apple", "Apple", "सेब", "苹果", "تفاح"),
+    makeWord("fruits", "banana", "Banana", "केला", "香蕉", "موز"),
+    makeWord("fruits", "mango", "Mango", "आम", "芒果", "مانجو"),
+    makeWord("fruits", "orange", "Orange", "संतरा", "橙子", "برتقال"),
+    makeWord("fruits", "grapes", "Grapes", "अंगूर", "葡萄", "عنب"),
+    makeWord("fruits", "strawberry", "Strawberry", "स्ट्रॉबेरी", "草莓", "فراولة"),
+    makeWord("fruits", "watermelon", "Watermelon", "तरबूज", "西瓜", "بطيخ"),
+    makeWord("fruits", "pear", "Pear", "नाशपाती", "梨", "كمثرى"),
+    makeWord("fruits", "pineapple", "Pineapple", "अनानास", "菠萝", "أناناس"),
+    makeWord("fruits", "peach", "Peach", "आड़ू", "桃子", "خوخ"),
+  ],
+  colors: [
+    makeWord("colors", "red", "Red", "लाल", "红色", "أحمر"),
+    makeWord("colors", "blue", "Blue", "नीला", "蓝色", "أزرق"),
+    makeWord("colors", "green", "Green", "हरा", "绿色", "أخضر"),
+    makeWord("colors", "yellow", "Yellow", "पीला", "黄色", "أصفر"),
+    makeWord("colors", "orange", "Orange", "नारंगी", "橙色", "برتقالي"),
+    makeWord("colors", "purple", "Purple", "बैंगनी", "紫色", "بنفسجي"),
+    makeWord("colors", "pink", "Pink", "गुलाबी", "粉色", "وردي"),
+    makeWord("colors", "black", "Black", "काला", "黑色", "أسود"),
+    makeWord("colors", "white", "White", "सफेद", "白色", "أبيض"),
+    makeWord("colors", "brown", "Brown", "भूरा", "棕色", "بني"),
+  ],
+};
+
+function makeWord(
+  themeId: string,
+  id: string,
+  en: string,
+  hi: string,
+  zh: string,
+  ar: string,
+): FlashcardWord {
+  return {
+    id: `${themeId}-${id}`,
+    themeId,
+    translations: { en, hi, zh, ar },
+  };
+}
