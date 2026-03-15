@@ -553,21 +553,16 @@ export default function Home() {
         {screen === "cards" && deck ? (
           <section className="flex h-full min-h-0 flex-col gap-3 rounded-3xl bg-white/80 p-3 shadow-sm ring-1 ring-violet-100 md:p-4">
             <div className="flex items-center justify-between">
-              <button
-                type="button"
-                onClick={() => setScreen("languages")}
-                className="bubble-text rounded-full border border-violet-200 bg-white px-5 py-2 text-lg font-bold"
-              >
-                ← Back
-              </button>
               <p className="storybook-title-soft text-center text-2xl font-extrabold md:text-3xl">
                 {selectedThemeLabel}
               </p>
-              <p className="bubble-text text-base font-bold">
-                {selectedLanguages.length}
-                {" "}
-                language(s)
-              </p>
+              <button
+                type="button"
+                onClick={() => setScreen("languages")}
+                className="bubble-text rounded-full border border-violet-200 bg-white px-6 py-2 text-xl font-bold"
+              >
+                Back
+              </button>
             </div>
 
             {isPreparingAudio ? (
