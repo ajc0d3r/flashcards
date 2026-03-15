@@ -70,6 +70,6 @@ export interface GenerateAudioRequest {
 
 export interface GenerateAudioResponse {
   audioDataUrl?: string;
-  provider: "openai" | "fallback";
+  provider: "google" | "fallback";
   error?: string;
 }

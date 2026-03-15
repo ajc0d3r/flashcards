@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { generateToddlerAudioDataUrl } from "@/lib/services/openaiClient";
+import { generateToddlerAudioDataUrl } from "@/lib/services/googleTtsClient";
 import { GenerateAudioRequest, LanguageCode } from "@/types/flashcard";
 
 const ALLOWED_LANGUAGES: LanguageCode[] = ["en", "hi", "zh", "ar"];
@@ -23,12 +23,12 @@ export async function POST(request: NextRequest) {
     );
 
     if (audioDataUrl) {
-      return NextResponse.json({ audioDataUrl, provider: "openai" });
+      return NextResponse.json({ audioDataUrl, provider: "google" });
     }
 
     return NextResponse.json({
       provider: "fallback",
-      error: "OpenAI key not configured.",
+      error: "Google TTS key not configured.",
     });
   } catch (error) {
     const message =

@@ -545,7 +545,7 @@ export default function Home() {
             ) : null}
             {ttsApiUnavailable ? (
               <p className="rounded-xl bg-amber-50 px-3 py-2 text-center text-sm font-bold text-amber-800">
-                OpenAI TTS is currently unavailable; using device voice fallback.
+                Google TTS is currently unavailable; using device voice fallback.
               </p>
             ) : null}
 
