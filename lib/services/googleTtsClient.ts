@@ -20,8 +20,8 @@ export async function generateToddlerAudioDataUrl(
     return null;
   }
 
-  // Slow, gentle pace for toddlers (Google TTS range: 0.25–4.0, where 1.0 is normal)
-  const speakingRate = 0.375;
+  // Gentle pace for toddlers (Google TTS range: 0.25–4.0, where 1.0 is normal)
+  const speakingRate = 0.6;
 
   const voice = LANGUAGE_VOICE[language];
 
