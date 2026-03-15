@@ -37,8 +37,6 @@ yarn-error.log*
 storage/*.db
 storage/*.db-*
 
-# locally cached generated images and audio
-/generated
 
 # vercel
 .vercel
