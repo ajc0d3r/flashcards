@@ -42,30 +42,36 @@ export async function generateToddlerImage(
   const attempts = Number.isFinite(maxAttempts) ? Math.min(Math.max(maxAttempts, 1), 5) : 3;
 
   for (let attempt = 0; attempt < attempts; attempt += 1) {
-    const result = await fal.subscribe(model, {
-      input: {
-        prompt: withAttemptPrompt(createToddlerImagePrompt(themeId, word), attempt),
-        aspect_ratio: "1:1",
-        num_images: 1,
-      },
-    });
+    try {
+      const result = await fal.subscribe(model, {
+        input: {
+          prompt: withAttemptPrompt(createToddlerImagePrompt(themeId, word), attempt),
+          aspect_ratio: "1:1",
+          num_images: 1,
+        },
+      });
 
-    const data = result.data as {
-      images?: Array<{ url?: string }>;
-      image?: { url?: string };
-    };
-    const candidateUrl = data?.images?.[0]?.url ?? data?.image?.url ?? null;
-    if (!candidateUrl) {
-      continue;
-    }
+      const data = result.data as {
+        images?: Array<{ url?: string }>;
+        image?: { url?: string };
+      };
+      const candidateUrl = data?.images?.[0]?.url ?? data?.image?.url ?? null;
+      if (!candidateUrl) {
+        console.error(`[falClient] Attempt ${attempt + 1}: no image URL in response`);
+        continue;
+      }
 
-    const hasText = await hasVisibleText(candidateUrl);
-    if (hasText === false) {
-      return candidateUrl;
-    }
-    if (hasText === null) {
-      // If text guard is unavailable, return candidate to avoid blocking UX.
-      return candidateUrl;
+      const hasText = await hasVisibleText(candidateUrl);
+      if (hasText === false) {
+        return candidateUrl;
+      }
+      if (hasText === null) {
+        // If text guard is unavailable, return candidate to avoid blocking UX.
+        return candidateUrl;
+      }
+      console.error(`[falClient] Attempt ${attempt + 1}: text detected in image, retrying`);
+    } catch (error) {
+      console.error(`[falClient] Attempt ${attempt + 1} failed:`, error);
     }
   }
 

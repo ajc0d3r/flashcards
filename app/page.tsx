@@ -619,7 +619,7 @@ async function playBrowserFallbackVoice(
   if (preferredVoice) {
     utterance.voice = preferredVoice;
   }
-  utterance.rate = 0.84;
+  utterance.rate = 0.375;
   utterance.pitch = 1.02;
   utterance.volume = 0.95;
 

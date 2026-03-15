@@ -20,12 +20,8 @@ export async function generateToddlerAudioDataUrl(
     return null;
   }
 
-  const configuredRate = Number.parseFloat(
-    process.env.GOOGLE_TTS_SPEAKING_RATE ?? "0.82",
-  );
-  const speakingRate = Number.isFinite(configuredRate)
-    ? Math.min(Math.max(configuredRate, 0.25), 4.0)
-    : 0.82;
+  // Slow, gentle pace for toddlers (Google TTS range: 0.25–4.0, where 1.0 is normal)
+  const speakingRate = 0.375;
 
   const voice = LANGUAGE_VOICE[language];
 

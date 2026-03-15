@@ -3,7 +3,7 @@ import path from "node:path";
 import { THEME_OPTIONS } from "../data/themes";
 import { VOCABULARY_BY_THEME } from "../data/vocabulary";
 import { generateToddlerImage } from "../lib/services/falClient";
-import { generateToddlerAudioDataUrl } from "../lib/services/openaiClient";
+import { generateToddlerAudioDataUrl } from "../lib/services/googleTtsClient";
 import {
   upsertCard,
   upsertCardAudio,

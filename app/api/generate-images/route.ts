@@ -26,7 +26,8 @@ export async function POST(request: NextRequest) {
       imageUrl: createFallbackImage(),
       provider: "fallback",
     });
-  } catch {
+  } catch (error) {
+    console.error("[generate-images] Error:", error);
     return NextResponse.json(
       { imageUrl: createFallbackImage(), provider: "fallback" },
       { status: 200 },
