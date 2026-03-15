@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { PLACEHOLDER_IMAGE_SQUARE } from "@/lib/imagePlaceholders";
 import { generateToddlerImage } from "@/lib/services/falClient";
+import { getCachedImageFile, cacheImageFile } from "@/lib/services/localCache";
 import { GenerateImageRequest } from "@/types/flashcard";
 
 function createFallbackImage(): string {
@@ -17,8 +18,16 @@ export async function POST(request: NextRequest) {
       );
     }
 
+    // Check local file cache first
+    const cached = getCachedImageFile(payload.themeId, payload.word.en);
+    if (cached) {
+      return NextResponse.json({ imageUrl: cached, provider: "fal" });
+    }
+
     const imageUrl = await generateToddlerImage(payload.themeId, payload.word);
     if (imageUrl) {
+      // Save to local disk in background
+      void cacheImageFile(payload.themeId, payload.word.en, imageUrl);
       return NextResponse.json({ imageUrl, provider: "fal" });
     }
 
