@@ -37,7 +37,7 @@ export async function generateToddlerImage(
   }
 
   ensureFalConfigured();
-  const model = process.env.FAL_IMAGE_MODEL ?? "fal-ai/flux/schnell";
+  const model = process.env.FAL_IMAGE_MODEL ?? "fal-ai/nano-banana-2";
   const maxAttempts = Number.parseInt(process.env.FAL_IMAGE_MAX_ATTEMPTS ?? "3", 10);
   const attempts = Number.isFinite(maxAttempts) ? Math.min(Math.max(maxAttempts, 1), 5) : 3;
 
@@ -45,7 +45,7 @@ export async function generateToddlerImage(
     const result = await fal.subscribe(model, {
       input: {
         prompt: withAttemptPrompt(createToddlerImagePrompt(themeId, word), attempt),
-        image_size: "square_hd",
+        aspect_ratio: "1:1",
         num_images: 1,
       },
     });
