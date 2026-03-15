@@ -83,6 +83,37 @@ export default function Home() {
   }, []);
 
   useEffect(() => {
+    if (screen !== "cards" || !deck || visibleCards.length === 0) {
+      return;
+    }
+    let isCancelled = false;
+    const start = currentPageIndex * CARDS_PER_PAGE;
+
+    void loadImagesForCards(visibleCards, deck.themeId, () => isCancelled).then(
+      (updatedCards) => {
+        if (isCancelled || !updatedCards) {
+          return;
+        }
+        setDeck((prev) => {
+          if (!prev) {
+            return prev;
+          }
+          const newCards = [...prev.cards];
+          updatedCards.forEach((card, i) => {
+            newCards[start + i] = card;
+          });
+          return { ...prev, cards: newCards };
+        });
+      },
+    );
+
+    return () => {
+      isCancelled = true;
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [screen, currentPageIndex, deck?.id]);
+
+  useEffect(() => {
     if (screen !== "cards" || visibleCards.length === 0) {
       return;
     }
@@ -204,8 +235,7 @@ export default function Home() {
       }
 
       const body = (await response.json()) as GenerateSetResponse;
-      const withImages = await attachImages(body.deck.cards, body.deck.themeId);
-      const finalDeck: FlashcardDeck = { ...body.deck, cards: withImages };
+      const finalDeck = body.deck;
 
       await setCachedDeck(deckCacheKey, finalDeck);
       setDeck(finalDeck);
@@ -220,13 +250,14 @@ export default function Home() {
     }
   }
 
-  async function attachImages(
+  async function loadImagesForCards(
     cards: FlashcardCard[],
     themeId: string,
-  ): Promise<FlashcardCard[]> {
-    return Promise.all(
+    isCancelled: () => boolean,
+  ): Promise<FlashcardCard[] | null> {
+    const results = await Promise.all(
       cards.map(async (card) => {
-        if (card.imageUrl) {
+        if (card.imageUrl || isCancelled()) {
           return card;
         }
         const imageKey = buildImageKey(themeId, card.translations.en);
@@ -252,6 +283,7 @@ export default function Home() {
         return { ...card, imageUrl: data.imageUrl };
       }),
     );
+    return isCancelled() ? null : results;
   }
 
   async function ensureAudioCached(
